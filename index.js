@@ -20,7 +20,7 @@ module.exports = function (opt) {
     JSTpath = JSTpath.replace(re, '');
 
     var str = file.contents.toString();
-    var output = "(function() {\n  this." + opt.namespace + " || (this." + opt.namespace + " = {});\n  this." + opt.namespace + "[" + JSON.stringify(JSTpath) + "] = " + eco.compile(str) + ";\n}).call(this);"
+    var output = "(function() {\n  this." + opt.namespace + " || (this." + opt.namespace + " = {});\n  this." + opt.namespace + "[" + JSON.stringify(JSTpath) + "] = " + eco.compile(str) + ";\n}).call(global || this);"
 
     try {
       file.contents = new Buffer(output);
