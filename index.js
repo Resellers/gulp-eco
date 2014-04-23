@@ -20,9 +20,7 @@ module.exports = function (opt) {
     JSTpath = JSTpath.replace(re, '');
 
     var str = file.contents.toString();
-    output = eco.compile(str);
-    output = 'window.' + opt.namespace + '["' + JSTpath + '"] = ' + output + '\n';
-    output = "if (!window." + opt.namespace + ") {\n  window." + opt.namespace + " = {};\n}\n" + output;
+    var output = "(function() {\n  this." + opt.namespace + " || (this." + opt.namespace + " = {});\n  this." + opt.namespace + "[" + JSON.stringify(JSTpath) + "] = " + eco.compile(str) + ";\n}).call(this);"
 
     try {
       file.contents = new Buffer(output);
